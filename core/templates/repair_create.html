@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-
-<h3>Create Repair Request</h3>
-
-<form method="post">
+<h4>Nhập tình trạng máy & yêu cầu sửa chữa</h4>
+<form method="post" class="card card-body">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-success" type="submit">Lưu thông tin</button>
 </form>
-
 {% endblock %}
