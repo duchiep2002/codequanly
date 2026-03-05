@@ -1,0 +1,11 @@
+<h2>Thêm máy mới</h2>
+
+<form method="post">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button type="submit">Lưu máy</button>
+
+</form>
