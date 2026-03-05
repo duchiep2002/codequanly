@@ -1,18 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
+<h3>{{ machine.machine_code }} - {{ machine.machine_name }}</h3>
+<p><strong>Phân xưởng:</strong> {{ machine.location }}</p>
+<p><strong>Tình trạng hiện tại:</strong> {{ machine.get_status_display }}</p>
 
-<h3>{{ machine.machine_name }}</h3>
-<p><strong>Status:</strong> {{ machine.status }}</p>
-
-<h5>Repair History</h5>
-<ul>
+<h5>Lịch sử nhập tình trạng</h5>
+<div class="table-responsive">
+<table class="table table-bordered">
+    <tr>
+        <th>Ngày nhập</th>
+        <th>Cấp nhập liệu</th>
+        <th>Tình trạng máy</th>
+        <th>Yêu cầu sửa chữa</th>
+        <th>Tình trạng bảo đảm</th>
+        <th>Người nhập</th>
+    </tr>
     {% for r in repairs %}
-        <li>{{ r.description }} - {{ r.status }}</li>
+    <tr>
+        <td>{{ r.report_date|date:"d/m/Y" }}</td>
+        <td>{{ r.get_reporter_level_display }}</td>
+        <td>{{ r.description }}</td>
+        <td>{{ r.repair_requirement }}</td>
+        <td>{{ r.get_assurance_status_display }}</td>
+        <td>{{ r.requested_by.username }}</td>
+    </tr>
     {% empty %}
-        <li>No repairs yet.</li>
+    <tr>
+        <td colspan="6" class="text-center">Chưa có bản ghi.</td>
+    </tr>
     {% endfor %}
-</ul>
+</table>
+</div>
 
-<a href="/" class="btn btn-secondary">Back</a>
-
+<a href="/" class="btn btn-secondary">Quay lại</a>
 {% endblock %}

@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Machine Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý tình trạng máy móc</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-4">
-    <h2>Machine Management System</h2>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Quản lý tình trạng máy móc phân xưởng</h2>
+        {% if user.is_authenticated %}
+            <div>
+                <span class="me-2">Xin chào, {{ user.username }}</span>
+                <a class="btn btn-outline-secondary btn-sm" href="{% url 'logout' %}">Đăng xuất</a>
+            </div>
+        {% endif %}
+    </div>
     <hr>
     {% block content %}{% endblock %}
 </div>
