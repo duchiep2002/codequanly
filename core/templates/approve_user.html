@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Duyệt tài khoản {{ user_to_approve.username }}{% endblock %}
+{% block content %}
+<h1 class="mb-4">Duyệt tài khoản: {{ user_to_approve.username }}</h1>
+<form method="post" class="form-group">
+    {% csrf_token %}
+    <label for="level">Chọn cấp quyền:</label>
+    <select name="level" class="form-control">
+        <option value="1">Cấp 1</option>
+        <option value="2">Cấp 2</option>
+        <option value="3">Cấp 3 (Quản lý)</option>
+    </select>
+    <button type="submit" class="btn btn-success mt-3">Duyệt và kích hoạt</button>
+</form>
+{% endblock %}

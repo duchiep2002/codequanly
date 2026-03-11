@@ -1,25 +1,42 @@
 {% extends "base.html" %}
+{% block title %}Bảng điều khiển{% endblock %}
 {% block content %}
-<a href="{% url 'create_repair' %}" class="btn btn-success mb-3">Create Repair Request</a>
+<h1 class="mb-4">Danh Sách Máy Móc</h1>
+<a href="{% url 'create_machine' %}" class="btn btn-primary mb-3">Thêm Máy Mới</a>
+<a href="{% url 'create_repair' %}" class="btn btn-secondary mb-3">Tạo Yêu Cầu Sửa Chữa</a>
 
-<table class="table table-bordered">
-    <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-    {% for machine in machines %}
-    <tr>
-        <td>{{ machine.machine_code }}</td>
-        <td>{{ machine.machine_name }}</td>
-        <td>{{ machine.status }}</td>
-        <td>
-            <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info btn-sm">
-                View
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mã máy</th>
+            <th>Tên máy</th>
+            <th>Vị trí</th>
+            <th>Trạng thái</th>
+            <th>Phân cấp</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for machine in machines %}
+        <tr>
+            <td>{{ machine.machine_code }}</td>
+            <td>{{ machine.name }}</td>
+            <td>{{ machine.location }}</td>
+            <td>{{ machine.get_status_display }}</td>
+            <td>Cấp {{ machine.classification_level }}</td>
+            <td>
+                <a href="{% url 'machine_detail' machine.pk %}" class="btn btn-info btn-sm">Chi tiết</a>
+                {% if user.profile.level >= 2 %}
+                    <a href="{% url 'update_machine' machine.pk %}" class="btn btn-warning btn-sm">Sửa thông tin</a>
+                {% endif %}
+                {% if user.profile.level >= 1 %}
+                    <a href="{% url 'update_machine_status' machine.pk %}" class="btn btn-secondary btn-sm">Cập nhật trạng thái</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center">Chưa có máy móc nào</td></tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

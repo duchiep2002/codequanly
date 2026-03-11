@@ -1,18 +1,59 @@
 {% extends "base.html" %}
+{% block title %}{{ machine.name }}{% endblock %}
 {% block content %}
+<h1 class="mb-4">{{ machine.name }} - {{ machine.machine_code }}</h1>
+<p><strong>Vị trí:</strong> {{ machine.location }}</p>
+<p><strong>Trạng thái:</strong> {{ machine.get_status_display }}</p>
+<p><strong>Phân cấp:</strong> Cấp {{ machine.classification_level }}</p>
 
-<h3>{{ machine.machine_name }}</h3>
-<p><strong>Status:</strong> {{ machine.status }}</p>
-
-<h5>Repair History</h5>
-<ul>
-    {% for r in repairs %}
-        <li>{{ r.description }} - {{ r.status }}</li>
-    {% empty %}
-        <li>No repairs yet.</li>
-    {% endfor %}
-</ul>
-
-<a href="/" class="btn btn-secondary">Back</a>
-
+<h2 class="mt-4">Yêu Cầu Sửa Chữa</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mô tả sự cố</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for repair in repairs %}
+        <tr>
+            <td>{{ repair.description }}</td>
+            <td>{{ repair.get_status_display }}</td>
+            <td>
+                {% if user.profile.level >= 1 and repair.status != 'done' %}
+                    <a href="{% url 'confirm_repair' repair.pk %}" class="btn btn-success btn-sm">Xác nhận đã sửa xong</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="text-center">Chưa có yêu cầu sửa chữa</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2 class="mt-4">Lịch Sử Bảo Trì/Sửa Chữa</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ngày bắt đầu sửa</th>
+            <th>Ngày hoàn thành</th>
+            <th>Hành động</th>
+            <th>Chi phí</th>
+            <th>Kỹ thuật viên</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for history in machine.maintenancehistory_set.all %}
+        <tr>
+            <td>{{ history.start_repair_date|date:"d/m/Y H:i" }}</td>
+            <td>{{ history.end_repair_date|date:"d/m/Y H:i"|default:"Chưa hoàn thành" }}</td>
+            <td>{{ history.action_taken }}</td>
+            <td>{{ history.cost }}</td>
+            <td>{{ history.technician.username|default:"Không xác định" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center">Chưa có lịch sử bảo trì</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

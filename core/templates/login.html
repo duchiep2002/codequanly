@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% block title %}Đăng nhập{% endblock %}
 {% block content %}
-<h3>Login</h3>
-<form method="post">
+<h1 class="mb-4">Đăng Nhập Hệ Thống</h1>
+<form method="post" class="form-group">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Đăng Nhập</button>
 </form>
+<p>Chưa có tài khoản? <a href="{% url 'register' %}">Đăng ký ngay</a></p>
 {% endblock %}

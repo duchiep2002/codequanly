@@ -1,11 +1,10 @@
-<h2>Thêm máy mới</h2>
-
-<form method="post">
-
-{% csrf_token %}
-
-{{ form.as_p }}
-
-<button type="submit">Lưu máy</button>
-
+{% extends "base.html" %}
+{% block title %}Thêm Máy Mới{% endblock %}
+{% block content %}
+<h1 class="mb-4">Thêm Máy Mới</h1>
+<form method="post" class="form-group">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Lưu</button>
 </form>
+{% endblock %}

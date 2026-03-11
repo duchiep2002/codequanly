@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Sửa {{ machine.name }}{% endblock %}
+{% block content %}
+<h1 class="mb-4">Sửa Thông Tin Máy</h1>
+<form method="post" class="form-group">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-warning">Cập Nhật</button>
+</form>
+{% endblock %}
