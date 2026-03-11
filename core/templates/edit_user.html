@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Chỉnh sửa {{ user_to_edit.username }}{% endblock %}
+{% block content %}
+<h2 class="mb-4">Chỉnh sửa tài khoản: {{ user_to_edit.username }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Cấp quyền</label>
+        <select name="level" class="form-select">
+            <option value="1" {% if user_to_edit.profile.level == 1 %}selected{% endif %}>Cấp 1</option>
+            <option value="2" {% if user_to_edit.profile.level == 2 %}selected{% endif %}>Cấp 2</option>
+            <option value="3" {% if user_to_edit.profile.level == 3 %}selected{% endif %}>Cấp 3</option>
+        </select>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="is_active" class="form-check-input" {% if user_to_edit.is_active %}checked{% endif %}>
+        <label class="form-check-label">Kích hoạt tài khoản</label>
+    </div>
+    <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+</form>
+{% endblock %}

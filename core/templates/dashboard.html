@@ -1,42 +1,53 @@
 {% extends "base.html" %}
 {% block title %}Bảng điều khiển{% endblock %}
 {% block content %}
-<h1 class="mb-4">Danh Sách Máy Móc</h1>
-<a href="{% url 'create_machine' %}" class="btn btn-primary mb-3">Thêm Máy Mới</a>
-<a href="{% url 'create_repair' %}" class="btn btn-secondary mb-3">Tạo Yêu Cầu Sửa Chữa</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Danh Sách Máy Móc</h2>
+    <div>
+        {% if user.profile.level >= 1 %}
+            <a href="{% url 'create_machine' %}" class="btn btn-primary me-2"><i class="fas fa-plus"></i> Thêm máy</a>
+        {% endif %}
+        {% if user.profile.level == 3 %}
+            <a href="{% url 'export_excel' %}" class="btn btn-success me-2"><i class="fas fa-file-excel"></i> Excel</a>
+            <a href="{% url 'export_pdf' %}" class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</a>
+        {% endif %}
+    </div>
+</div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Mã máy</th>
-            <th>Tên máy</th>
-            <th>Vị trí</th>
-            <th>Trạng thái</th>
-            <th>Phân cấp</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for machine in machines %}
-        <tr>
-            <td>{{ machine.machine_code }}</td>
-            <td>{{ machine.name }}</td>
-            <td>{{ machine.location }}</td>
-            <td>{{ machine.get_status_display }}</td>
-            <td>Cấp {{ machine.classification_level }}</td>
-            <td>
-                <a href="{% url 'machine_detail' machine.pk %}" class="btn btn-info btn-sm">Chi tiết</a>
-                {% if user.profile.level >= 2 %}
-                    <a href="{% url 'update_machine' machine.pk %}" class="btn btn-warning btn-sm">Sửa thông tin</a>
-                {% endif %}
-                {% if user.profile.level >= 1 %}
-                    <a href="{% url 'update_machine_status' machine.pk %}" class="btn btn-secondary btn-sm">Cập nhật trạng thái</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="6" class="text-center">Chưa có máy móc nào</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="row g-4">
+    {% for machine in machines %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ machine.name }} <small>({{ machine.machine_code }})</small></h5>
+                <p class="card-text">
+                    <strong>Vị trí:</strong> {{ machine.location }}<br>
+                    <strong>Ngày nhận:</strong> {{ machine.start_date|date:"d/m/Y H:i" }}<br>
+                    <strong>Phân cấp:</strong> Cấp {{ machine.classification_level }}<br>
+                    <strong>Trạng thái:</strong> 
+                    <span class="badge rounded-pill px-3 py-2 {% if machine.status == 'working' %}bg-success{% elif machine.status == 'maintenance' %}bg-warning{% else %}bg-danger{% endif %}">
+                        {{ machine.get_status_display }}
+                    </span>
+                </p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'machine_detail' machine.pk %}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> Chi tiết</a>
+                    {% if user.profile.level >= 2 %}
+                        <a href="{% url 'update_machine' machine.pk %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Sửa</a>
+                    {% endif %}
+                    {% if user.profile.level >= 1 %}
+                        <a href="{% url 'update_machine_status' machine.pk %}" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Cập nhật trạng thái</a>
+                    {% endif %}
+                    {% if user.profile.level >= 1 %}
+                        <a href="{% url 'create_repair' %}?machine={{ machine.pk }}" class="btn btn-danger btn-sm"><i class="fas fa-tools"></i> Tạo sửa chữa</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <h4>Chưa có máy móc nào</h4>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

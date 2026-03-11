@@ -57,3 +57,7 @@ class ConfirmRepairForm(forms.ModelForm):
             'action_taken': _("Hành động đã thực hiện"),
             'cost': _("Chi phí"),
         }
+
+class UpdateStatusForm(forms.Form):
+    status = forms.ChoiceField(choices=Machine.STATUS, label="Trạng thái mới")
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), label="Mô tả cập nhật", required=False)

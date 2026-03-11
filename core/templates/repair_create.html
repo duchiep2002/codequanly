@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Tạo Yêu Cầu Sửa{% endblock %}
+{% block title %}Tạo yêu cầu sửa chữa{% endblock %}
 {% block content %}
-<h1 class="mb-4">Tạo Yêu Cầu Sửa Chữa</h1>
-<form method="post" class="form-group">
+<h2 class="mb-4">Tạo yêu cầu sửa chữa</h2>
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Gửi</button>
+    <button type="submit" class="btn btn-danger">Gửi yêu cầu</button>
 </form>
 {% endblock %}
