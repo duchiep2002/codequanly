@@ -261,3 +261,7 @@ def approve_user(request, pk):
 def machine_detail(request, pk):
     machine = get_object_or_404(Machine, pk=pk)
     return render(request, 'core/machine_detail.html', {'machine': machine})
+
+def machine_list(request):
+    machines = Machine.objects.all()  # Lấy tất cả máy từ DB
+    return render(request, 'core/machine_list.html', {'machines': machines})
