@@ -257,3 +257,7 @@ def approve_user(request, pk):
             messages.success(request, _("Đã duyệt và kích hoạt tài khoản! User có thể đăng nhập ngay."))
             return redirect('users_list')
     return render(request, 'approve_user.html', {'user_to_approve': user})
+
+def machine_detail(request, pk):
+    machine = get_object_or_404(Machine, pk=pk)
+    return render(request, 'core/machine_detail.html', {'machine': machine})

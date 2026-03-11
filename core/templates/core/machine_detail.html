@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết máy: {{ machine.name|default:"Không có tên" }}</title>
+</head>
+<body>
+    <h1>Chi tiết máy</h1>
+    <p>ID: {{ machine.pk }}</p>
+    <p>Tên máy: {{ machine.name }}</p>  <!-- Thay 'name' bằng field thực tế trong model Machine -->
+    <p>Trạng thái: {{ machine.status|default:"N/A" }}</p>
+    <!-- Thêm các field khác từ model của bạn -->
+    <a href="{% url 'machine_list' %}">Quay lại danh sách</a>  <!-- Nếu có url name cho list -->
+</body>
+</html>
